@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+
+<div class="container mx-auto p-6">
+
+    <!-- Header -->
+    <header class="text-center mb-8">
+        <h1 class="text-3xl font-bold">Welcome to Our Kitchen!</h1>
+        <p class="text-lg text-gray-600">Order your favorite food now.</p>
+    </header>
+
+    <!-- Menu -->
+    <section id="menu" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Sample Item -->
+        <div class="bg-white rounded-lg shadow overflow-hidden p-4 hover:bg-gray-50">
+            <img src="https://via.placeholder.com/150" alt="Food Item" class="w-full h-auto object-cover mb-2">
+            <h3 class="text-xl font-semibold">Spaghetti Carbonara</h3>
+            <p class="text-lg text-gray-700">$12.99</p>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4" onclick="addItem('Spaghetti Carbonara',
+12.99)">Order Now</button>
+        </div>
+
+        <!-- Add more items here -->
+
+    </section>
+
+    <!-- Order Summary -->
+    <aside id="order-summary" class="bg-white p-6 rounded-lg shadow mt-8">
+        <h2 class="text-xl font-semibold mb-4">Your Order</h2>
+        <ul id="order-items" class="list-none"></ul>
+        <div class="mt-4 text-gray-700">
+            <span>Total:</span> <span id="total">$0.00</span>
+        </div>
+        <button id="submit-order" class="bg-green-500 text-white px-4 py-2 rounded mt-4 disabled">Submit
+Order</button>
+    </aside>
+
+</div>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    let order = [];
+    let total = 0;
+
+    function addItem(name, price) {
+        const item = { name, price };
+        order.push(item);
+        updateOrderSummary();
+    }
+
+    function updateOrderSummary() {
+        const orderItemsList = document.getElementById('order-items');
+        const totalPriceElement = document.getElementById('total');
+
+        orderItemsList.innerHTML = '';
+        order.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+            orderItemsList.appendChild(li);
+        });
+
+        total = order.reduce((acc, item) => acc + item.price, 0);
+        totalPriceElement.textContent = `$${total.toFixed(2)}`;
+
+        if (order.length > 0) {
+            document.getElementById('submit-order').disabled = false;
+        } else {
+            document.getElementById('submit-order').disabled = true;
+        }
+    }
+
+    document.getElementById('submit-order').addEventListener('click', () => {
+        alert(`Order Submitted!\nTotal: $${total.toFixed(2)}`);
+        order = [];
+        total = 0;
+        updateOrderSummary();
+    });
+</script>
+
+</body>
+</html>
